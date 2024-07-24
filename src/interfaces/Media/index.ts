@@ -16,3 +16,30 @@ export interface MediaResponse {
         media: Partial<Media>;
     };
 }
+
+export const MediaQuery = `
+        id
+        name
+        description
+        fileHeight
+        fileId
+        fileName
+        fileSize
+        fileType
+        fileUrl
+        fileWidth
+`;
+
+export const MediaFromIDQuery = (mediaId: string) => {
+    return (
+        `
+    query Media {
+    media(id: "${mediaId}") {
+        ` +
+        MediaQuery +
+        `
+    }
+  }
+  `
+    );
+};

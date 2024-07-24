@@ -1,4 +1,4 @@
-import { Media } from "@/interfaces/Media"
+import { Media, MediaQuery } from "@/interfaces/Media"
 
 export interface Blog {
   id: string;
@@ -33,16 +33,51 @@ export interface AllBlogResponse {
   };
 }
 
+const BlogFieldsQuery =
+  `
+    id
+    name
+    publishDate
+    slug
+    title
+    description
+    body
+`;
+
+const BlogQuery =
+  BlogFieldsQuery + `
+  image {
+      results {
+            ` +
+  MediaQuery +
+  `
+      }
+      total
+  }
+  relatedArticles {
+      results {
+            ` +
+  BlogFieldsQuery +
+  `
+          image {
+              total
+              results {
+                    ` +
+  MediaQuery +
+  `
+              }
+          }
+      }
+  }
+`;
+
 export const AllBlogQuery = `query AllBlog {
     allBlog(orderBy: PUBLISHDATE_DESC) {
         total
         results {
-            id
-            name
-            publishDate
-            slug
-            title
-            description
+  ` +
+  BlogQuery +
+  `
         }
     }
 }
